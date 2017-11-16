@@ -5,35 +5,43 @@ var router = express.Router();
 
 var loc = path.join(__dirname, "../data/friends.js");
 
-router.get('/friends', function (req, res) {
-		return res.sendFile(loc);
+router.get('/friends', function(req, res) {
+  return res.sendFile(loc);
 });
 
-router.post('/friends', function (req, res) {
-	var newFriend = req.body;
-	console.log(newFriend);
-	var friends = [];
-	var matchIndex = friends.length;
-	var loc = path.join(__dirname, "../data/friends.js");
-	if(fs.existsSync(loc)){
-		var matchValue = 50;
-		friends = JSON.parse(fs.readFileSync(loc),"utf8");
-		for(var i = 0; i < friends.length; i++) {
-			var sum = 0;
-			for(var j = 0; j < friends[i].scores.length; i++) {
-				sum += Math.abs(parsInt(newFriend.scores[j] - friends[i].scores[j]));
-			}
-			if (sum < matchValue) {
-				matchValue = sum;
-				matchIndex = i; 
-			}
-		}
-	}
-	friends.push(newFriend);
-	fs.writeFile(loc, JSON.stringify(friends), "utf8", function(err, res) {
-		if (err) throw err;
-	});
-	return res.json(friends[matchIndex]);
+router.post('/friends', function(req, res) {
+  var newFriend = req.body;
+  console.log(newFriend.name, newFriend.photo, newFriend.scores);
+  var friends = [];
+  var matchIndex = friends.length;
+  var notNew = false;
+  var loc = path.join(__dirname, "../data/friends.js");
+  if (fs.existsSync(loc)) {
+    var matchValue = 50;
+    friends = JSON.parse(fs.readFileSync(loc), "utf8");
+    for (var i = 0; i < friends.length; i++) {
+      var sum = 0;
+      if (newFriend.name.toLowerCase() !== friends[i].name.toLowerCase()) {
+        var size = friends[i].scores.length;
+        for (var j = 0; j < size; j++) {
+          sum += Math.abs(parseInt(newFriend.scores[j]) - parseInt(friends[i].scores[j]));
+        }
+        if (sum < matchValue) {
+          matchValue = sum;
+          matchIndex = i;
+        }
+      } else {
+        notNew = true;
+      }
+    }
+  }
+  if (!notNew) {
+    friends.push(newFriend);
+  }
+  fs.writeFile(loc, JSON.stringify(friends, null, 2), "utf8", function(err, res) {
+    if (err) throw err;
+  });
+  return res.json(friends[matchIndex]);
 });
 
 module.exports = router;
