@@ -11,7 +11,7 @@ router.get('/friends', function(req, res) {
 
 router.post('/friends', function(req, res) {
   var newFriend = req.body;
-  console.log(newFriend.name, newFriend.photo, newFriend.scores);
+  console.log(newFriend);
   var friends = [];
   var matchIndex = friends.length;
   var notNew = false;

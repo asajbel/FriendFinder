@@ -181,9 +181,8 @@
           </button>
         </div>
         <div class="modal-body" align="center">
-        	<h5 id="friendName">Name</h5>
-        	<img id="friendPic" class="img-fluid rounded" src="">
-
+          <h5 id="friendName">Name</h5>
+          <img id="friendPic" class="img-fluid rounded" src="">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -213,13 +212,19 @@
 
     console.log(newFriend);
 
-    // Question: What does this code do??
-    $.post("/api/friends", newFriend)
-      .done(function(data) {
-        $("#friendName").text(data.name);
-        $("#friendPic").attr("src", data.photo);
-        $("#friendModal").modal('toggle');
-      });
+    $.ajax({
+      url: "/api/friends",
+      data: JSON.stringify(newFriend),
+      type: "POST",
+      contentType: "application/json",
+      dataType: "json"
+    }).success(function(data) {
+      $("#friendName").text(data.name);
+      $("#friendPic").attr("src", data.photo);
+      $("#friendModal").modal('toggle');
+    });
+
+
 
   });
   </script>

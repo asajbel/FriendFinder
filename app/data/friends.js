@@ -190,5 +190,37 @@
       1,
       1
     ]
+  },
+  {
+    "name": "Bruce",
+    "photo": "http://www.fillmurray.com/500/600",
+    "scores": [
+      5,
+      5,
+      5,
+      5,
+      1,
+      5,
+      5,
+      5,
+      1,
+      1
+    ]
+  },
+  {
+    "name": "Ivy",
+    "photo": "http://www.fillmurray.com/500/700",
+    "scores": [
+      3,
+      3,
+      3,
+      2,
+      1,
+      5,
+      5,
+      1,
+      1,
+      1
+    ]
   }
 ]
